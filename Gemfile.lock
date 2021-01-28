@@ -1,0 +1,16 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    lemmatizer (0.2.2)
+
+PLATFORMS
+  x86_64-darwin-19
+
+DEPENDENCIES
+  lemmatizer
+
+RUBY VERSION
+   ruby 2.6.6p146
+
+BUNDLED WITH
+   2.2.7
