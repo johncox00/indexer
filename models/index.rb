@@ -49,7 +49,29 @@ class Index
 
   def search(phrase)
     words = (normalize(phrase) - stop_words)
-    puts @the_index.select { |key,_| words.include? key }
+    results = @the_index.select { |key,_| words.include? key }
+    if results.length > 0
+      puts format(results)
+    else
+      puts '(no results)'
+    end
+  end
+
+  def format(results)
+    caps = {}.tap do |h|
+      results.values.each do |r|
+        r[:docs].each do |id, vals|
+          h[id] = h[id] ? h[id] + vals : vals
+        end
+      end
+    end
+    result = []
+    caps.each do |id, vals|
+      doc = @documents[id].split(' ')
+      vals.each{|v| doc[v] = doc[v].upcase}
+      result << doc.join(' ')
+    end
+    result.join("\n")
   end
 
   def normalize(words)
