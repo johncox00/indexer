@@ -5,9 +5,8 @@ loop do
   is = gets.chomp
   if is == 'exit'
     break
-  elsif is == 'search'
-    puts "\n\nEnter search term:"
-    i.search gets.chomp
+  elsif is[0..1] == '?='
+    i.search is[2..]
     puts "\n"
   else
     i.parse_and_index is

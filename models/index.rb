@@ -1,4 +1,4 @@
-require "lemmatizer"
+require 'lingua/stemmer'
 
 class Index
   attr_accessor :the_index
@@ -7,7 +7,7 @@ class Index
   def initialize
     @the_index = {}
     @documents = []
-    @lem = Lemmatizer.new
+    @stemmer= Lingua::Stemmer.new(:language => "en")
   end
 
   def stop_words
@@ -25,11 +25,10 @@ class Index
   end
 
   def index_word(word, i)
-    w = @lem.lemma(word)
-    if @the_index[w]
-      add(w, i)
+    if @the_index[word]
+      add(word, i)
     else
-      insert(w, i)
+      insert(word, i)
     end
   end
 
@@ -49,11 +48,11 @@ class Index
   end
 
   def search(phrase)
-    words = normalize(phrase) - stop_words
+    words = (normalize(phrase) - stop_words)
     puts @the_index.select { |key,_| words.include? key }
   end
 
   def normalize(words)
-    words.gsub(/[^\w\s]/, '').downcase.split(' ')
+    words.gsub(/[^\w\s]/, '').downcase.split(' ').map{|w| @stemmer.stem(w)}
   end
 end
